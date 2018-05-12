@@ -1,0 +1,48 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.2.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'com.google.gradle:osdetector-gradle-plugin:1.4.0'
+	}
+}
+
+configurations.all {
+	exclude group: "org.springframework.boot", module: 'spring-boot-starter-tomcat'
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.google.osdetector"
+
+group = 'com.home'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web')
+//    compile('org.springframework:spring-webmvc')
+    compile('org.springframework.boot:spring-boot-starter-jetty')
+
+    compile('org.eclipse.jetty:jetty-alpn-server')
+    compile('org.eclipse.jetty.http2:http2-server')
+    compile('org.eclipse.jetty:jetty-alpn-conscrypt-server')
+    compile('org.eclipse.jetty:jetty-alpn-openjdk8-server')
+
+//  osdetector for windows x32 will generate incorrect windows-x86-32
+//    compile 'org.conscrypt:conscrypt-openjdk:1.1.2:' + osdetector.classifier
+    compile 'org.conscrypt:conscrypt-openjdk:1.1.2:windows-x86'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
